@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="HomeGenie.Controls.ModuleControls"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:HomeGenie.ViewModel.Converters"
+    xmlns:modulecontrols="clr-namespace:HomeGenie.Controls"
+    xmlns:cff="clr-namespace:Coding4Fun.Toolkit.Controls;assembly=Coding4Fun.Toolkit.Controls"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="800" d:DesignWidth="680"
+    >
+    <Grid x:Name="LayoutRoot">
+        <Grid.Resources>
+
+            <local:ModuleAddinVisibilityConverter x:Key="ModuleAddinVisibility" />
+            <local:PropertyAddinVisibilityConverter x:Key="PropertyAddinVisibility" />
+            <local:ModulePropertyConverter x:Key="PropertyConverter" />
+            <local:HsbColorConverter x:Key="HsbColorConverter" />
+
+                <Storyboard x:Name="ModuleControlPopupAnim">
+                    <DoubleAnimation
+                    Storyboard.TargetName="LayoutRoot"
+                    Storyboard.TargetProperty="Opacity"
+                    From="0.0" To="1.0" Duration="0:0:0.2" 
+                    />
+                </Storyboard>
+
+        </Grid.Resources>
+
+        <Grid.Background>
+            <SolidColorBrush Color="{StaticResource PhoneInverseBackgroundColor}" Opacity="0.7" />
+        </Grid.Background>
+
+        <Grid VerticalAlignment="Center" Margin="0,40,0,-40">
+
+            <Border Margin="20" 
+                    Background="{StaticResource PhoneBackgroundBrush}" 
+                    CornerRadius="20"
+                    BorderThickness="2" 
+                    BorderBrush="{StaticResource PhoneBorderBrush}" />
+
+
+            <Grid Margin="40">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+
+                <TextBlock Grid.Row="0" Margin="0,0,0,14" FontFamily="Segoe WP Black" Text="{Binding Name}" TextWrapping="NoWrap" Foreground="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Bottom" FontSize="32" Style="{StaticResource PhoneTextExtraLargeStyle}"  />
+
+                <!-- Status.Level -->
+                <Grid Grid.Row="2" Margin="0,0,0,0" Visibility="{Binding DeviceType, Converter={StaticResource ModuleAddinVisibility}, ConverterParameter=Dimmer:Siren}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="1" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}" 
+                                                                    Text="Level" />
+
+                    <TextBlock Grid.Row="1" IsHitTestVisible="False" HorizontalAlignment="Right" 
+                               FontFamily="Microsoft MHei" FontWeight="Black" FontSize="20" 
+                               Style="{StaticResource PhoneTextExtraLargeStyle}" 
+                               Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Status.Level+}" />
+
+                    <Slider Grid.Row="2" x:Name="ModuleSlider" Margin="10,0,10,0"
+                            Foreground="{StaticResource PhoneChromeBrush}"
+                            Minimum="0" Maximum="1" 
+                            Value="{Binding Properties, Converter={StaticResource PropertyConverter}, ConverterParameter=Status.Level}" 
+                            ValueChanged="ModuleSlider_ValueChanged"
+                            MouseLeftButtonUp="ModuleSlider_MouseLeftButtonUp">
+                    </Slider>
+
+                </Grid>
+
+
+                <Grid
+                    x:Name="ColorPickerBox"
+                    Grid.Row="1" Grid.RowSpan="2" Height="350"
+                    Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Status.ColorHsb}"
+                    Background="{StaticResource PhoneBackgroundBrush}">
+                    
+                    <cff:ColorPicker 
+                        x:Name="ColorPicker" 
+                        ColorChanged="ColorPicker_ColorChanged"
+                        Margin="-40,0,92,0"
+                        Color="{Binding Properties, Converter={StaticResource HsbColorConverter}, ConverterParameter=Status.ColorHsb}"
+                    />
+                    <cff:ColorSlider 
+                        x:Name="ColorSlider" 
+                        Margin="0,35,0,-80" 
+                        HorizontalAlignment="Right" 
+                        Width="80" 
+                        Orientation="Vertical" 
+                        ColorChanged="ColorSlider_ColorChanged">
+                    </cff:ColorSlider>
+
+                    <TextBlock 
+                               HorizontalAlignment="Right" 
+                               VerticalAlignment="Top"
+                               Style="{StaticResource PhoneTextSmallStyle}"
+                               FontFamily="Microsoft MHei" FontWeight="Black" FontSize="20" 
+                               Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Status.Level+}" />
+
+                </Grid>
+
+
+                <!-- Control Buttons -->
+                <Grid Grid.Row="3" Visibility="{Binding DeviceType, Converter={StaticResource ModuleAddinVisibility}, ConverterParameter=Dimmer:Light:Switch:Siren}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Border Margin="0,0,0,-12" Grid.ColumnSpan="3" Background="{StaticResource PhoneBackgroundBrush}"></Border>
+                        <Button Grid.Column="0" x:Name="PopupClose" 
+                                Content="{Binding Path=LocalizedResources.MainPage_Popup_Exit, Source={StaticResource LocalizedStrings}}" 
+                                BorderThickness="1" HorizontalAlignment="Left" Click="PopupClose_Click" />
+                        <Button Grid.Column="1" x:Name="ModuleOff" Content="OFF" BorderThickness="1" HorizontalAlignment="Stretch" Click="ModuleOff_Click" />
+                        <Button Grid.Column="2" x:Name="ModuleOn" Content="ON" BorderThickness="1" HorizontalAlignment="Stretch"  Click="ModuleOn_Click" />
+                    </Grid>
+                </Grid>
+
+
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</UserControl>
+
+

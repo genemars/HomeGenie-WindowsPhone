@@ -1,0 +1,474 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="HomeGenie.GroupsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:HomeGenie"
+    xmlns:converters="clr-namespace:HomeGenie.ViewModel.Converters"
+    xmlns:modulecontrols="clr-namespace:HomeGenie.Controls"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True" d:DesignHeight="768" d:DesignWidth="480">
+    <UserControl.Resources>
+
+        <local:LocalizedStrings x:Key="LocalizedStrings"></local:LocalizedStrings>
+        <converters:ModuleIconUrlConverter x:Key="IconUrlConverter" />
+        <converters:ModuleAddinVisibilityConverter x:Key="ModuleAddinVisibility" />
+        <converters:PropertyAddinVisibilityConverter x:Key="PropertyAddinVisibility" />
+        <converters:ModuleVisibilityConverter x:Key="ModuleVisibility" />
+        <converters:ModulePropertyConverter x:Key="PropertyConverter" />
+        <converters:LatestPropertyDateTimeConverter x:Key="LastUpdatedPropertyConverter" />
+        <converters:SecurityArmedConverter x:Key="SecurityArmedConverter" />
+        <converters:HsbColorConverter x:Key="HsbColorConverter" />
+        <converters:ModuleDomainConverter x:Key="ModuleDomainConverter" />
+
+    </UserControl.Resources>
+    <!--LayoutRoot è la griglia radice in cui viene inserito tutto il contenuto della pagina-->
+    <Grid x:Name="LayoutRoot">
+        
+        <!--Controllo Pivot-->
+        <controls:Pivot x:Name="PivotView" Title="{Binding Path=LocalizedResources.MainPage_Title, Source={StaticResource LocalizedStrings}}" ItemsSource="{Binding Items}" SelectionChanged="PivotView_SelectionChanged">
+
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" Foreground="{StaticResource PhoneAccentBrush}" />
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
+            <controls:Pivot.ItemTemplate>
+                <DataTemplate>
+                    <ListBox x:Name="ListView" Margin="0,0,0,0" ItemsSource="{Binding Modules}" SelectionChanged="ListView_SelectionChanged">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="3" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="VerticalContentAlignment" Value="Top" />
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="TabNavigation" Value="Local" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Grid Background="{TemplateBinding Background}">
+                                                <vsm:VisualStateManager.VisualStateGroups>
+                                                    <vsm:VisualStateGroup x:Name="CommonStates">
+                                                        <vsm:VisualState x:Name="Normal" />
+                                                        <vsm:VisualState x:Name="MouseOver">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="fillColor" Storyboard.TargetProperty="Opacity" Duration="0" To=".15"/>
+                                                            </Storyboard>
+                                                        </vsm:VisualState>
+                                                        <vsm:VisualState x:Name="Disabled">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="contentPresenter" Storyboard.TargetProperty="Opacity" Duration="0" To=".25" />
+                                                            </Storyboard>
+                                                        </vsm:VisualState>
+                                                    </vsm:VisualStateGroup>
+                                                    <vsm:VisualStateGroup x:Name="SelectionStates">
+                                                        <vsm:VisualState x:Name="Unselected" />
+                                                        <vsm:VisualState x:Name="Selected">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="fillColor2" Storyboard.TargetProperty="Opacity" Duration="0" To=".55"/>
+                                                                <ColorAnimation Storyboard.TargetName="fillColor2" Storyboard.TargetProperty="(Fill).Color" To="{StaticResource PhoneBackgroundColor}"/>
+                                                            </Storyboard>
+                                                        </vsm:VisualState>
+                                                    </vsm:VisualStateGroup>
+                                                    <vsm:VisualStateGroup x:Name="FocusStates">
+                                                        <vsm:VisualState x:Name="Focused">
+                                                            <Storyboard>
+                                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FocusVisualElement" Storyboard.TargetProperty="Visibility" Duration="0">
+                                                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                                                        <DiscreteObjectKeyFrame.Value>
+                                                                            <Visibility>Visible</Visibility>
+                                                                        </DiscreteObjectKeyFrame.Value>
+                                                                    </DiscreteObjectKeyFrame>
+                                                                </ObjectAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </vsm:VisualState>
+                                                        <vsm:VisualState x:Name="Unfocused"/>
+                                                    </vsm:VisualStateGroup>
+                                                </vsm:VisualStateManager.VisualStateGroups>
+                                                <Rectangle x:Name="fillColor" Opacity="0" Fill="{StaticResource PhoneInverseBackgroundBrush}" IsHitTestVisible="False" RadiusX="1" RadiusY="1"/>
+                                                <Rectangle x:Name="fillColor2" Opacity="0" Fill="{StaticResource PhoneInverseBackgroundBrush}" IsHitTestVisible="False" RadiusX="1" RadiusY="1"/>
+                                                <ContentPresenter
+                                                            x:Name="contentPresenter"
+                                                            Content="{TemplateBinding Content}"
+                                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                            Margin="{TemplateBinding Padding}"/>
+                                                <Rectangle x:Name="FocusVisualElement" Stroke="{StaticResource PhoneInverseBackgroundBrush}" StrokeThickness="0.25" Visibility="Collapsed" RadiusX="1" RadiusY="1" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid x:Name="ModuleWidget" Margin="0,0,0,0" Visibility="{Binding Converter={StaticResource ModuleVisibility}}">
+                                    <Border VerticalAlignment="Bottom" BorderThickness="1" Opacity="0.25" BorderBrush="{StaticResource PhoneForegroundBrush}" Height="1" />
+
+                                    <Grid Margin="0,20">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Margin="0,0,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0" Margin="0,0,0,0" Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+
+                                                <TextBlock FontFamily="Segoe WP Black" Text="{Binding Name}" TextWrapping="NoWrap" Foreground="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Bottom" FontSize="32" Style="{StaticResource PhoneTextExtraLargeStyle}"  />
+
+                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0" VerticalAlignment="Bottom">
+                                                    <TextBlock FontFamily="Microsoft MHei" FontWeight="ExtraBlack" Text="{Binding DeviceType}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                                    <TextBlock FontFamily="Microsoft MHei" Text="{Binding Domain, Converter={StaticResource ModuleDomainConverter}}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                                    <TextBlock FontFamily="Microsoft MHei" Text="{Binding Address}" TextWrapping="Wrap" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                                </StackPanel>
+                                                
+                                                <TextBlock FontFamily="Microsoft MHei" Margin="14,5,0,0"
+                                                           Text="{Binding Properties, Converter={StaticResource LastUpdatedPropertyConverter}}"
+                                                           TextWrapping="Wrap" Style="{StaticResource PhoneTextSmallStyle}"/>
+
+                                            </StackPanel>
+                                            <Image Grid.Column="1" x:Name="ModuleIcon" Width="100" MaxHeight="100" VerticalAlignment="Top">
+                                                <local:BindingUtil.MultiBindings>
+                                                    <local:MultiBindings>
+                                                        <local:MultiBinding TargetProperty="Source"
+                                                                            Converter="{StaticResource IconUrlConverter}"
+                                                                            Mode="OneWay">
+                                                            <local:BindingCollection>
+                                                                <Binding ElementName="ModuleIcon"/>
+                                                                <Binding Path="IconUrl"/>
+                                                            </local:BindingCollection>
+                                                        </local:MultiBinding>
+                                                    </local:MultiBindings>
+                                                </local:BindingUtil.MultiBindings>
+                                                
+                                            </Image>
+                                        </Grid>
+
+                                        <Grid Grid.Row="1">
+                                            
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"></RowDefinition>
+                                                <RowDefinition Height="Auto"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            
+                                            <StackPanel Grid.Row="0" HorizontalAlignment="Right">
+
+                                                <TextBlock HorizontalAlignment="Right" 
+                                                     FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextLargeStyle}"
+                                                     Text="{Binding Properties, Converter={StaticResource PropertyConverter}, ConverterParameter=Conditions.DisplayLocation}"
+                                                     Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Conditions.DisplayLocation}"></TextBlock>
+
+                                                <TextBlock HorizontalAlignment="Right"
+                                                    FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextLargeStyle}"
+                                                    Text="{Binding Properties, Converter={StaticResource PropertyConverter}, ConverterParameter=Conditions.Description}"
+                                                    Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Conditions.Description}"></TextBlock>
+
+                                            </StackPanel>
+                                            
+                                            <toolkit:WrapPanel Grid.Row="1"
+                                                               Orientation="Horizontal" 
+                                                               HorizontalAlignment="Right" 
+                                                               Margin="0,5,5,0">
+
+
+                                                <!-- Status.ColorHsb -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" 
+                                                        BorderThickness="1" 
+                                                        CornerRadius="3" 
+                                                        Margin="5,5,5,5"
+                                                        Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Status.ColorHsb}">
+                                                    <StackPanel Margin="0,0,0,0" Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"
+                                                                   Text="{Binding Path=LocalizedResources.Module_Status_ColorHsb, Source={StaticResource LocalizedStrings}}" 
+                                                                   TextAlignment="Center" />
+                                                        <Border Width="80" Height="26" Margin="1,0">
+                                                            <Border.Background>
+                                                            <SolidColorBrush Color="{Binding Properties, Converter={StaticResource HsbColorConverter}, ConverterParameter=Status.ColorHsb}"></SolidColorBrush>
+                                                            </Border.Background>
+                                                        </Border>
+                                                    </StackPanel>
+
+                                                </Border>
+
+                                                <!-- Meter.Watts -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Meter.Watts}">
+                                                    <StackPanel Margin="0,0,0,0" Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"
+                                                                   Text="{Binding Path=LocalizedResources.Module_Meter_Watts, Source={StaticResource LocalizedStrings}}" 
+                                                                   TextAlignment="Center" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}"
+                                                                   Text="{Binding Properties, Converter={StaticResource PropertyConverter}, ConverterParameter=Meter.Watts+}" 
+                                                                   TextAlignment="Center"/>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Status.Level -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                        Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Status.Level}">
+                                                    <StackPanel Margin="0,0,0,0" Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"
+                                                                   TextAlignment="Center" Text="{Binding Path=LocalizedResources.Module_Status_Level, Source={StaticResource LocalizedStrings}}" />
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" 
+                                                                   Text="{Binding Properties, Converter={StaticResource PropertyConverter}, ConverterParameter=Status.Level+}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Status.Battery -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Status.Battery}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="{Binding Path=LocalizedResources.Module_Status_Battery, Source={StaticResource LocalizedStrings}}" />
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Status.Battery+}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Sensor.Temperature -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Sensor.Temperature}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="{Binding Path=LocalizedResources.Module_Sensor_Temperature, Source={StaticResource LocalizedStrings}}" />
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Sensor.Temperature+}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Sensor.Humidity -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                        Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Sensor.Humidity}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="{Binding Path=LocalizedResources.Module_Sensor_Humidity, Source={StaticResource LocalizedStrings}}" />
+                                                        <TextBlock FontWeight="Black" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Sensor.Humidity+}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Sensor.Luminance -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Sensor.Luminance}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="{Binding Path=LocalizedResources.Module_Sensor_Luminance, Source={StaticResource LocalizedStrings}}" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Sensor.Luminance+}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- ConfigureOptions.Latitude -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=ConfigureOptions.Latitude}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Lat." />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=ConfigureOptions.Latitude}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- ConfigureOptions.Longitude -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=ConfigureOptions.Longitude}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Long." />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=ConfigureOptions.Longitude}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+
+                                                <!-- Conditions.FeelsLikeC -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Conditions.FeelsLikeC}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Temperature ℃" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Conditions.FeelsLikeC}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+
+                                                <!-- Astronomy.Sunrise -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Astronomy.Sunrise}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Sunrise" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Astronomy.Sunrise}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Astronomy.Sunset -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Astronomy.Sunset}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Sunset" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Astronomy.Sunset}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Conditions.PrecipitationHourMetric -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Conditions.PrecipitationHourMetric}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Precipitation h/m" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Conditions.PrecipitationHourMetric}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <!-- Conditions.PressureMb -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=Conditions.PressureMb}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Pressure mb" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" Text="{Binding Properties, Converter={StaticResource PropertyConverter}, 
+                                                            ConverterParameter=Conditions.PressureMb}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+
+                                                <!-- HomeGenie.SecurityArmed -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=HomeGenie.SecurityArmed}">
+                                                    <StackPanel Margin="0,0,0,0"
+                                                                Orientation="Vertical">
+                                                        <TextBlock FontWeight="Black" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextAccentStyle}"  
+                                                                    Text="Status" />
+                                                        <TextBlock FontWeight="Black" Grid.Row="1" Margin="14,0" FontFamily="Microsoft MHei" Style="{StaticResource PhoneTextNormalStyle}" 
+                                                                   Text="{Binding Properties, Converter={StaticResource SecurityArmedConverter}}" 
+                                                                   TextAlignment="Center" />
+                                                    </StackPanel>
+                                                </Border>
+
+
+                                                <!-- HomeGenie.SecuritySystem Arm/Disarm Toggle Button -->
+                                                <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="1" CornerRadius="3" Margin="5,5,5,5"
+                                                         Visibility="{Binding Properties, Converter={StaticResource PropertyAddinVisibility}, ConverterParameter=HomeGenie.SecurityArmed}">
+                                                    <ToggleButton x:Name="ArmDisarmButton" Checked="ArmDisarmButton_Checked" Unchecked="ArmDisarmButton_Unchecked" Content="Arm"></ToggleButton>
+                                                </Border>
+
+
+                                            </toolkit:WrapPanel>
+                                        
+                                        </Grid>
+                                            
+                                    </Grid>
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,15" />
+                                    <Image Visibility="Collapsed" x:Name="OnOffIcon" Source="/HomeGenie;component/Data/on_off.png" Width="70" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,15"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DataTemplate>
+            </controls:Pivot.ItemTemplate>
+
+        </controls:Pivot>
+
+        <!-- TODO: implement as a Popup -->
+        <Grid x:Name="LoadingDialog" Visibility="Collapsed">
+            <Grid.Background>
+                <SolidColorBrush Color="{StaticResource PhoneBackgroundColor}" Opacity="0.7"></SolidColorBrush>
+            </Grid.Background>
+            <Grid VerticalAlignment="Center" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Border Grid.RowSpan="2" CornerRadius="10" BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="2">
+                    <Border.Background>
+                        <SolidColorBrush Color="{StaticResource PhoneChromeColor}"></SolidColorBrush>
+                    </Border.Background>
+                </Border>
+                <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" Margin="20">
+                    <Image Source="/Assets/genie.png" Height="160"></Image>
+                    <ProgressBar x:Name="LoadingDialogProgress"  IsIndeterminate="True"></ProgressBar>
+                    <TextBlock x:Name="LoadingDialogMessage" Text="{Binding Path=LocalizedResources.MainPage_Popup_Connecting, Source={StaticResource LocalizedStrings}}" TextAlignment="Center" Margin="0,8,0,0"></TextBlock>
+                </StackPanel>
+                <StackPanel x:Name="LoadingDialogButtons" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="Collapsed" Margin="20">
+                    <Button x:Name="LoadingDialogHelpButton" Margin="0,0,10,0" Content="{Binding Path=LocalizedResources.MainPage_Popup_Help, Source={StaticResource LocalizedStrings}}" Click="LoadingDialogHelpButton_Click"></Button>
+                    <Button x:Name="LoadingDialogSetupButton" Content="{Binding Path=LocalizedResources.MainPage_Popup_Settings, Source={StaticResource LocalizedStrings}}" Click="LoadingDialogSetupButton_Click"></Button>
+                    <Button x:Name="LoadingDialogRetryButton"  Content="{Binding Path=LocalizedResources.MainPage_Popup_Retry, Source={StaticResource LocalizedStrings}}" Click="LoadingDialogRetryButton_Click"></Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+
+
+        <ProgressBar x:Name="LoaderTop" Canvas.ZIndex="100" Grid.Row="1" Visibility="Collapsed" IsIndeterminate="True" VerticalAlignment="Top" Margin="0,150,0,0"/>
+
+
+        <Image x:Name="SplashImage" Source="SplashScreenImage.jpg" Stretch="UniformToFill">
+            <Image.Resources>
+
+                <Storyboard x:Name="SplashImageAnim">
+                    <DoubleAnimation
+                    Storyboard.TargetName="SplashImage"
+                    Storyboard.TargetProperty="Opacity"
+                    From="1.0" To="0.0" Duration="0:0:1.75" BeginTime="0:0:1.25" Completed="SplashImageAnim_Completed"
+                    />
+                </Storyboard>
+
+            </Image.Resources>
+        </Image>
+        
+    </Grid>
+
+    <!--Codice di esempio che illustra l'utilizzo di ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar x:Uid="ProgramsMenu" IsVisible="False" IsMenuEnabled="True" Mode="Minimized" StateChanged="ApplicationBar_StateChanged">
+            <shell:ApplicationBarIconButton IconUri="/Assets/ApplicationBar/setup.png" Text="settings" x:Name="OpenSettings" Click="OpenSettings_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Assets/ApplicationBar/home.png" Text="admin" x:Name="OpenAdmin" Click="OpenAdmin_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/ApplicationBar/help.png" Text="help" x:Name="OpenHelp" Click="OpenHelp_Click" />
+            <shell:ApplicationBarIconButton IconUri="/Assets/ApplicationBar/about.png" Text="info" x:Name="OpenInfo" Click="OpenInfo_Click" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

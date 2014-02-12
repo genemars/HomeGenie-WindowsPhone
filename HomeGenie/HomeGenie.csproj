@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DE472B91-A6C2-48B0-9B34-947FB0ECC755}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HomeGenie</RootNamespace>
+    <AssemblyName>HomeGenie</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>HomeGenie.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>HomeGenie.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Coding4Fun.Toolkit.Controls">
+      <HintPath>Dependencies\Coding4Fun.Toolkit.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Newtonsoft.Json.WindowsPhone">
+      <HintPath>Dependencies\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPage.xaml.cs">
+      <DependentUpon>AdminPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppSettings.cs" />
+    <Compile Include="Controls\ModuleControls.xaml.cs">
+      <DependentUpon>ModuleControls.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GroupsPage.xaml.cs">
+      <DependentUpon>GroupsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HttpRequestQueue.cs" />
+    <Compile Include="LocalizedStrings.cs" />
+    <Compile Include="MultiBinding\BindingUtil.cs" />
+    <Compile Include="MultiBinding\IMultiValueConverter.cs" />
+    <Compile Include="MultiBinding\MultiBinding.cs" />
+    <Compile Include="MultiBinding\MultiBindings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\AppResources.it-IT.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.it-IT.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SetupPage.xaml.cs">
+      <DependentUpon>SetupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utility\HSBColor.cs" />
+    <Compile Include="ViewModel\Converters\IntToVisibilityConverter.cs" />
+    <Compile Include="ViewModel\Converters\ModuleIconUrlConverter.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Objects\Data.cs" />
+    <Compile Include="ViewModel\Objects\Group.cs" />
+    <Compile Include="ViewModel\Objects\Module.cs" />
+    <Compile Include="ViewModel\Objects\ModuleParameter.cs" />
+    <Compile Include="WebBrowserPage.xaml.cs">
+      <DependentUpon>WebBrowserPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="AdminPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ModuleControls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GroupsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SetupPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WebBrowserPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationIcon.png" />
+    <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\ApplicationBar\help.png" />
+    <Content Include="Assets\ApplicationBar\home.png" />
+    <Content Include="Assets\ApplicationBar\setup.png" />
+    <Content Include="Assets\ApplicationIcon.png" />
+    <Content Include="Assets\ApplicationBar\about.png" />
+    <Content Include="Assets\Tiles\FlipCycleTileLarge.png" />
+    <Content Include="Assets\Tiles\FlipCycleTileMedium.png" />
+    <Content Include="Assets\Tiles\FlipCycleTileSmall.png" />
+    <Content Include="Assets\Tiles\IconicTileMediumLarge.png" />
+    <Content Include="Assets\Tiles\IconicTileSmall.png" />
+    <Content Include="Assets\genie.png" />
+    <Content Include="Assets\toasticon.png" />
+    <Content Include="Assets\WeatherIcons\day\chanceflurries.png" />
+    <Content Include="Assets\WeatherIcons\day\chancerain.png" />
+    <Content Include="Assets\WeatherIcons\day\chancesleet.png" />
+    <Content Include="Assets\WeatherIcons\day\chancesnow.png" />
+    <Content Include="Assets\WeatherIcons\day\chancetstorm.png" />
+    <Content Include="Assets\WeatherIcons\day\clear.png" />
+    <Content Include="Assets\WeatherIcons\day\cloudy.png" />
+    <Content Include="Assets\WeatherIcons\day\flurries.png" />
+    <Content Include="Assets\WeatherIcons\day\fog.png" />
+    <Content Include="Assets\WeatherIcons\day\hazy.png" />
+    <Content Include="Assets\WeatherIcons\day\mostlycloudy.png" />
+    <Content Include="Assets\WeatherIcons\day\mostlysunny.png" />
+    <Content Include="Assets\WeatherIcons\day\partlycloudy.png" />
+    <Content Include="Assets\WeatherIcons\day\partlysunny.png" />
+    <Content Include="Assets\WeatherIcons\day\rain.png" />
+    <Content Include="Assets\WeatherIcons\day\sleet.png" />
+    <Content Include="Assets\WeatherIcons\day\snow.png" />
+    <Content Include="Assets\WeatherIcons\day\sunny.png" />
+    <Content Include="Assets\WeatherIcons\day\tstorms.png" />
+    <Content Include="Assets\WeatherIcons\night\chanceflurries.png" />
+    <Content Include="Assets\WeatherIcons\night\chancerain.png" />
+    <Content Include="Assets\WeatherIcons\night\chancesleet.png" />
+    <Content Include="Assets\WeatherIcons\night\chancesnow.png" />
+    <Content Include="Assets\WeatherIcons\night\chancetstorm.png" />
+    <Content Include="Assets\WeatherIcons\night\clear.png" />
+    <Content Include="Assets\WeatherIcons\night\cloudy.png" />
+    <Content Include="Assets\WeatherIcons\night\flurries.png" />
+    <Content Include="Assets\WeatherIcons\night\fog.png" />
+    <Content Include="Assets\WeatherIcons\night\hazy.png" />
+    <Content Include="Assets\WeatherIcons\night\mostlycloudy.png" />
+    <Content Include="Assets\WeatherIcons\night\mostlysunny.png" />
+    <Content Include="Assets\WeatherIcons\night\partlycloudy.png" />
+    <Content Include="Assets\WeatherIcons\night\partlysunny.png" />
+    <Content Include="Assets\WeatherIcons\night\rain.png" />
+    <Content Include="Assets\WeatherIcons\night\sleet.png" />
+    <Content Include="Assets\WeatherIcons\night\snow.png" />
+    <Content Include="Assets\WeatherIcons\night\sunny.png" />
+    <Content Include="Assets\WeatherIcons\night\tstorms.png" />
+    <Content Include="Background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="SplashScreenImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.it-IT.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.it-IT.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\AppResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\Widgets\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>
