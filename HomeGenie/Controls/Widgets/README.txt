@@ -1,0 +1,1 @@
+Modules widgets and control popups should be splitted from ModuleControls.xaml and implemented here as separate files.
