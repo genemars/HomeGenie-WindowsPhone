@@ -28,8 +28,8 @@ namespace HomeGenie.ViewModel.Objects
             }
         }
         public string Description { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
-        public Types Type { get; set; } //physical control type (on/off, 0-100, Hot/Cold, InputSensor, etc.)
+        //[JsonConverter(typeof(StringEnumConverter))]
+        //public Types Type { get; set; } //physical control type (on/off, 0-100, Hot/Cold, InputSensor, etc.)
         [JsonConverter(typeof(StringEnumConverter))]
         public DeviceTypes DeviceType 
         { 
@@ -82,11 +82,6 @@ namespace HomeGenie.ViewModel.Objects
                         if (p.Name == "Status.Level")
                         {
                             double.TryParse(p.Value, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out level);
-                            if (level != 0D)
-                                statussuffix = "on";
-                            else
-                                statussuffix = "off";
-                            //break;
                         }
                         else if (p.Name == "Widget.DisplayModule")
                         {
@@ -96,6 +91,15 @@ namespace HomeGenie.ViewModel.Objects
                         {
                             double.TryParse(p.Value, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.CultureInfo.InvariantCulture, out doorwindow);
                         }
+                    }
+                    //
+                    if (level != 0D || doorwindow != 0D)
+                    {
+                        statussuffix = "on";
+                    }
+                    else
+                    {
+                        statussuffix = "off";
                     }
                 }
                 catch (Exception)
@@ -202,15 +206,16 @@ namespace HomeGenie.ViewModel.Objects
             Properties = new ObservableCollection<ModuleParameter>();
             RoutingNode = "";
         }
-
+        /*
         public enum Types
         {
+            Generic = -1,
             BinarySwitch,
             MultiLevelSwitch,
             Thermostat,
             InputSensor
         }
-
+        */
         public enum DeviceTypes
         {
             Generic = -1,

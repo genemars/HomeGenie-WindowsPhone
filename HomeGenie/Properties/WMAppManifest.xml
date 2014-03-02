@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{fd210c22-d9dd-4725-b653-df908ea9fc3c}" Title="HomeGenie" RuntimeType="Silverlight" Version="1.0.0.27" Genre="apps.normal" Author="Generoso Martello" Description="Client App for HomeGenie home automation service" Publisher="G-Labs">
+  <App xmlns="" ProductID="{fd210c22-d9dd-4725-b653-df908ea9fc3c}" Title="HomeGenie" RuntimeType="Silverlight" Version="1.0.0.28" Genre="apps.normal" Author="Generoso Martello" Description="Client App for HomeGenie home automation service" Publisher="G-Labs">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
