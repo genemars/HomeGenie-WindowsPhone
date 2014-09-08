@@ -1,6 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{fd210c22-d9dd-4725-b653-df908ea9fc3c}" Title="HomeGenie" RuntimeType="Silverlight" Version="1.0.0.28" Genre="apps.normal" Author="Generoso Martello" Description="Client App for HomeGenie home automation service" Publisher="G-Labs">
+<Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
+  <DefaultLanguage xmlns="" code="" />
+  <Languages xmlns="">
+    <Language code="it-IT" />
+    <Language code="en-US" />
+    <Language code="en-GB" />
+    <Language code="" />
+  </Languages>
+  <App xmlns="" ProductID="{fd210c22-d9dd-4725-b653-df908ea9fc3c}" Title="HomeGenie" RuntimeType="Silverlight" Version="1.0.0.28" Genre="apps.normal" Author="Generoso Martello" Description="Client App for HomeGenie home automation service" Publisher="G-Labs" PublisherID="{686d855a-e418-4a9d-94a4-ec0ca37f3e33}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -13,12 +20,23 @@
     </Tasks>
     <Tokens>
       <PrimaryToken TokenID="HomeGenieToken" TaskName="_default">
-        <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
+        <TemplateFlip>
+          <SmallImageURI IsResource="false" IsRelative="true">Background.png</SmallImageURI>
           <Count>0</Count>
+          <BackgroundImageURI IsResource="false" IsRelative="true">Background.png</BackgroundImageURI>
           <Title>HomeGenie</Title>
-        </TemplateType5>
+          <BackContent></BackContent>
+          <BackBackgroundImageURI></BackBackgroundImageURI>
+          <BackTitle></BackTitle>
+          <DeviceLockImageURI></DeviceLockImageURI>
+          <HasLarge>false</HasLarge>
+        </TemplateFlip>
       </PrimaryToken>
     </Tokens>
+    <ScreenResolutions>
+      <ScreenResolution Name="ID_RESOLUTION_WVGA" />
+      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
+      <ScreenResolution Name="ID_RESOLUTION_HD720P" />
+    </ScreenResolutions>
   </App>
 </Deployment>

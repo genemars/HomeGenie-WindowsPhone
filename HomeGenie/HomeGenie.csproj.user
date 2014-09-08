@@ -3,12 +3,25 @@
   <PropertyGroup>
     <SupportedCultures>it-IT;en-US;en-GB;</SupportedCultures>
     <ProjectView>ShowAllFiles</ProjectView>
+    <CurrentDeployCmdId />
+    <CurrentDeployID />
+    <PublishUrlHistory />
+    <InstallUrlHistory />
+    <SupportUrlHistory />
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>en-US</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{C089C8C0-30E0-4E22-80C0-CE093F111A43}">
         <SilverlightMobileCSProjectFlavor>
           <FullDeploy>False</FullDeploy>
+          <DebuggerType>Managed</DebuggerType>
+          <DebuggerAgentType>Managed</DebuggerAgentType>
+          <Tombstone>False</Tombstone>
         </SilverlightMobileCSProjectFlavor>
       </FlavorProperties>
     </VisualStudio>

@@ -67,12 +67,7 @@ namespace HomeGenie
 
         public void AddToQueue(string id, string url, Action<WebRequestCompletedArgs> callback)
         {
-            QueueRequest qr = null;
-            try 
-	        {	        
-                qr = requests.First(r => r.Id == id);
-	        }
-	        catch (Exception) { }
+            QueueRequest qr = requests.FirstOrDefault(r => r.Id == id);
             if (qr == null) requests.Add(new QueueRequest(id, url, callback));
             MakeNextRequest();
         }

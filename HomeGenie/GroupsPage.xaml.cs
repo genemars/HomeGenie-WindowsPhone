@@ -134,12 +134,7 @@ namespace HomeGenie
 
                 if (_lastsavedgroup != "")
                 {
-                    Group lastgroup = null;
-                    try
-                    {
-                        lastgroup = App.ViewModel.Items.First(g => g.Name == _lastsavedgroup);
-                    }
-                    catch { }
+                    Group lastgroup = App.ViewModel.Items.FirstOrDefault(g => g.Name == _lastsavedgroup);
                     if (lastgroup != null)
                     {
                         PivotView.SelectedItem = lastgroup;

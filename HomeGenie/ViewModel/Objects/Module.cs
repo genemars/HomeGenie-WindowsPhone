@@ -229,7 +229,8 @@ namespace HomeGenie.ViewModel.Objects
             Fan,
             Thermostat,
             Shutter,
-            DoorWindow
+            DoorWindow,
+            MediaTransmitter,
             //siren, alarm, motion sensor, door sensor, thermal sensor, etc.
         }
 

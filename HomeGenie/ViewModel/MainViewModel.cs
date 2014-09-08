@@ -114,9 +114,7 @@ namespace HomeGenie.ViewModel
                     List<Group> newgroups = new List<Group>();
                     foreach (Group g in groups)
                     {
-                        Group existinggroup = null;
-                        try { existinggroup = this.Items.First(eg => eg.Name == g.Name); }
-                        catch { }
+                        Group existinggroup = this.Items.FirstOrDefault(eg => eg.Name == g.Name);
                         if (existinggroup != null)
                         {
                             existinggroup.Name = g.Name;
@@ -162,9 +160,7 @@ namespace HomeGenie.ViewModel
                 {
                     foreach (Module m in modules)
                     {
-                        Module existinmodule = null;
-                        try { existinmodule = g.Modules.First(gm => gm.Domain == m.Domain && gm.Address == m.Address); }
-                        catch { }
+                        Module existinmodule = g.Modules.FirstOrDefault(gm => gm.Domain == m.Domain && gm.Address == m.Address);
                         if (existinmodule != null)
                         {
                             existinmodule.Name = m.Name;
